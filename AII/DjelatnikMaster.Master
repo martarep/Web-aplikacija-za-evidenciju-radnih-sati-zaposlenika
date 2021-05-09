@@ -1,0 +1,50 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DjelatnikMaster.master.cs" Inherits="AII.DjelatnikMaster" %>
+
+<!DOCTYPE html>
+
+
+<html>
+<head runat="server">
+       <script src="Scripts/jquery-3.0.0.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Scripts/Naslovna.css" rel="stylesheet" />
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Francois+One&family=Roboto&display=swap" rel="stylesheet"/> 
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="body_s">
+
+  <nav class="navbar navbar_custom">
+  <span class="nav-item navbar_description">
+      <asp:Label Text="Djelatnik" runat="server" meta:resourcekey="LabelResource1" /></span>
+         
+      <asp:HyperLink NavigateUrl="~/DjelatnikPregle.aspx" runat="server" CssClass=" navbar_item" meta:resourcekey="HyperLinkResource1" >
+<i class='fas fa-user-circle'></i>  Pregled
+      </asp:HyperLink>
+           <asp:HyperLink NavigateUrl="~/DjelatnikAžuriranje.aspx" runat="server" CssClass="navbar_item" meta:resourcekey="HyperLinkResource2" >
+      <i class='fas fa-user-circle'></i> Ažuriranje
+      </asp:HyperLink>
+          <asp:HyperLink NavigateUrl="~/DjelatnikUnos.aspx" runat="server" CssClass="navbar_item" meta:resourcekey="HyperLinkResource3" >
+  <i class='fas fa-user-circle'></i>  Unos
+      </asp:HyperLink>
+              <asp:HyperLink NavigateUrl="~/DjelatnikDeaktivacija.aspx" runat="server" CssClass="navbar_item" meta:resourcekey="HyperLinkResource4" >
+  <i class='fas fa-user-circle'></i>  Deaktivacija
+      </asp:HyperLink>
+         <asp:HyperLink NavigateUrl="GlavniIzbornik.aspx" runat="server" CssClass="navbar_item menu" meta:resourcekey="HyperLinkResource5" >
+  <i class='fa fa-bars'></i>
+      </asp:HyperLink>
+   
+
+</nav>
+
+
+     <div>
+             <asp:ContentPlaceHolder ID="content" runat="server">
+      </asp:ContentPlaceHolder>
+      </div> 
+
+</body>
+</html>

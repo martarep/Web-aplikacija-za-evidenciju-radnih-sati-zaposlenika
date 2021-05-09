@@ -1,0 +1,59 @@
+﻿@model AZERS.Djelatnik
+@{
+    ViewBag.Title = "ShowPodaci";
+    var tim = ViewData["Tim"];
+    var tipDjelatnika = ViewData["TipDjelatnika"];
+}
+
+
+<h2 class="description">  <i class="glyphicon glyphicon-user"></i> Profil</h2>
+<hr />
+<div class="row">
+    <div class="col-md-5 col-sm-12 height">
+
+        <h4 class="position_center"><i class="glyphicon glyphicon-user icon_custom"></i></h4>
+
+        @Html.HiddenFor(model => model.IDDjelatnik)
+        <div class="form-inline">
+
+            <span class="lbl"> @Html.Label(expression: "ime", labelText: "Ime:")</span>
+            <span class="info">  @Html.DisplayFor(model => model.Ime)</span>
+        </div>
+        <div class="form-inline">
+            <span class="lbl">   @Html.Label(expression: "prezime", labelText: "Prezime:")</span>
+            <span class="info">  @Html.DisplayFor(model => model.Prezime) </span>
+        </div>
+        <div class="form-inline">
+            <span class="lbl">    @Html.Label(expression: "email", labelText: "Email:")</span>
+            <span class="info">        @Html.DisplayFor(model => model.Email) </span>
+        </div>
+        <div class="form-inline">
+            <span class="lbl">      @Html.Label(expression: "datumZaposlenja", labelText: "Datum zaposlenja:")</span>
+            <span class="info">  @Html.Label("DatumZaposlenja", Model.DatumZaposlenja.ToShortDateString()) </span>
+
+        </div>
+        <div class="form-inline">
+            <span class="lbl">    @Html.Label(expression: "tipDjelatnika", labelText: "Tip djelatnika:")</span>
+            <span class="info">      @Html.DisplayFor(t => tipDjelatnika) </span>
+
+        </div>
+        <div class="form-inline">
+            <span class="lbl">    @Html.Label(expression: "tim", labelText: "Tim:")</span>
+            <span class="info">      @Html.DisplayFor(t => tim) </span>
+        </div>
+
+    </div>
+
+    <div class="position_center height">
+        <div class="col-md-6 col-sm-12 ">
+            <div class="postavke form-inline ">
+                <i class="glyphicon glyphicon-cog icon_custom"></i>
+                <a href="@Url.Action(controllerName:"Profil", actionName: "ChangePassword") " class="btn btn_o">Promijeni lozinku</a>
+            </div>
+   
+        </div>
+
+
+    </div>
+
+</div>

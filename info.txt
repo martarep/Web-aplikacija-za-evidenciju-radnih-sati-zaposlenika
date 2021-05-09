@@ -1,0 +1,4 @@
+1) Execute PRA_RWA_Baza_FinalnaSkripta
+2)Execute Procedure_PRA_RWA_Fin_Skripta
+3) Provjeriti connection stringove
+4)Pokrenuti projekt npr sa -> Email: mhorvat@ingenii.hr i Lozinka: ZSJR6F 

@@ -1,0 +1,410 @@
+﻿@model IEnumerable<AZERS.Models.PoslanaSatnica>
+
+@{
+    ViewBag.Title = "ShowPodaci";
+    var datum = ViewData["datum"];
+}
+
+<h2 class="description"><i class="glyphicon glyphicon-ok-sign"></i> Potvrda satnica</h2>
+<hr />
+<div class="height">
+
+    @using (Html.BeginForm()) {
+                    if (Model.ToList().Count > 0)
+                    {
+
+        <div class="lbl form-inline">
+
+            <i class="glyphicon glyphicon-calendar"></i>  Datum: @Html.TextBoxFor(d => datum, "{0:yyyy-MM-dd}", new { Type = "date", @class = "form-control ", data_datumsatnice = datum, id = "DatumSatnice" })
+
+        </div>
+
+        <table class="table_custom" id="table">
+
+            <thead>
+
+                <tr>
+
+                    <td class="table_header">   @Html.Label("Ime i prezime")</td>
+
+                    <td class="table_header"> @Html.Label("Datum Satnice")</td>
+
+                    <td class="table_header"> @Html.Label("Datum Slanja")</td>
+
+                    <td class="table_header"> @Html.Label("Vrijeme Slanja")</td>
+
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+
+                @foreach (var item in Model)
+        {
+
+                    <tr>
+                        @Html.HiddenFor(modelItem => item.IDDjelatnik)
+                        <td class="table_data"> @Html.DisplayFor(modelItem => item.ImePrezime)</td>
+
+                        <td class="table_data"> @Html.Label("DatumSatnice",item.DatumSatnice.ToShortDateString()) </td>
+
+                        <td class="table_data">  @Html.Label("DatumSatnice", item.DatumSlanja.ToShortDateString())</td>
+
+<td class="table_data">@Html.DisplayFor(modelItem => item.VrijemeSlanja)</td>
+
+                        <td class="table_data">
+                            @Html.ActionLink(linkText: "Detalji",
+
+          actionName: "Detalji",
+
+          htmlAttributes: new
+
+          {
+
+              id = "Detalji",
+
+              @class = " btn btn_o btnp",
+
+              data_iddjelatnik = item.IDDjelatnik,
+
+              data_datumsatnice = item.DatumSatnice,
+
+          }, routeValues: new { IDDjelatnik = item.IDDjelatnik, DatumSatnica = item.DatumSatnice })
+
+                            @Html.ActionLink(linkText: "Potvrdi",
+
+          actionName: "Potvrdi",
+
+          htmlAttributes: new
+
+          {
+
+              id = "Potvrdi",
+
+              @class = " btn btn_o btnp",
+
+              data_iddjelatnik = item.IDDjelatnik,
+
+              data_datumsatnice = item.DatumSatnice,
+
+          }, routeValues: new { idDjelatnik = item.IDDjelatnik, datumSatnice = item.DatumSatnice })
+
+                            @Html.ActionLink(linkText: "Vrati",
+
+          actionName: "Vrati",
+
+          htmlAttributes: new
+
+          {
+
+              id = "Vrati",
+
+              @class = " btn btn_o btnp",
+
+              data_iddjelatnik = item.IDDjelatnik,
+
+              data_datumsatnice = item.DatumSatnice,
+
+          }, routeValues: new { idDjelatnik = item.IDDjelatnik, datumSatnice = item.DatumSatnice })
+                        </td>
+
+                    </tr>
+
+                }
+
+        </table>
+        }
+
+        else
+        { 
+
+
+        <div class="lbl form-inline">
+
+            <i class="glyphicon glyphicon-calendar"></i> Datum: @Html.TextBoxFor(d => datum, "{0:yyyy-MM-dd}", new { Type = "date", @class = "form-control ", data_datumsatnice = datum, id = "DatumSatnice" })
+
+        </div>
+
+    <div class="center lbl">
+
+        Nema satnica za provjeru za ovaj datum!
+
+    </div>
+    }
+
+    }
+</div>
+
+
+
+@section scripts{
+
+    <script>
+
+        $("#DatumSatnice").change(() => {
+            $("form").submit()
+        });
+
+
+        
+      $("#Potvrdi").on("click", function (e) {
+
+            e.preventDefault();
+
+            const { iddjelatnik, datumsatnice } = this.dataset;
+
+
+
+            satnicaPodaci = {
+
+            DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+        Status:"Potvrđeno"
+            }
+
+
+
+
+            $.ajax({
+
+            url: "@Url.Action(controllerName:"PotvrdaSatnica",actionName:"Potvrdi")",
+
+                data: satnicaPodaci,
+
+                statusCode: {
+
+                    200: function () {
+                        alert("Satnica je potvrđena!");
+                        $("form").submit();
+
+                    }
+
+                }
+
+            });
+
+
+
+        });
+
+        
+      $("#Vrati").on("click", function (e) {
+
+            e.preventDefault();
+
+            const { iddjelatnik, datumsatnice } = this.dataset;
+
+
+
+            satnicaPodaci = {
+
+            DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+
+                  Status:"Evidentiranje"
+
+            }
+
+
+
+
+            $.ajax({
+
+            url: "@Url.Action(controllerName:"PotvrdaSatnica",actionName:"Vrati")",
+
+                data: satnicaPodaci,
+
+                statusCode: {
+
+                    200: function () {
+                        alert("Satnica je vraćena na evidentiranje!");
+                        $("form").submit();
+
+                    }
+
+                }
+
+            });
+
+
+
+        });
+
+
+        @*  $(".btn-danger").on("click", function (e) {
+
+            e.preventDefault();
+
+            const { iddjelatnik, vrijeme, datumsatnice, idprojekt } = this.dataset;
+
+
+
+            satnicaPodaci = {
+
+                DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+
+                IDProjekt: idprojekt,
+
+                Vrijeme: vrijeme
+
+            }
+
+
+            if (status == "pokrenuto") {
+                stopTimer();
+            }
+
+
+
+            $.ajax({
+
+                url: "@Url.Action(controllerName:"Evidencija",actionName:"Stop")",
+
+                data: satnicaPodaci,
+
+                statusCode: {
+
+                    200: function () {
+
+
+
+                    }
+
+                }
+
+            });
+
+        });
+
+
+
+
+
+
+
+
+        $("#Spremi").on("click", function (e) {
+            e.preventDefault();
+
+            const { iddjelatnik, datumsatnice,  brojprojekata } = this.dataset;
+
+
+
+            if (status == "pokrenuto") {
+                stopTimer();
+            }
+
+            var listaProjekata = [];
+             var idprojekata = @Html.Raw(Json.Encode(idProjekata));
+            for (var j = 0; j < brojprojekata; j++) {
+                var i = idprojekata[j];
+                     var id = "input[name=" + i + "IDProjekta]";
+                     var idNaziv = "input[name=" + i + "NazivProjekta]";
+            var idBrS ="#" + i + "BrojZabiljezenihSati";
+            var idBrM ="#" + i + "BrojZabiljezenihMinuta";
+            var idBrSek ="#" + i + "BrojZabiljezenihSekundi";
+            var idBrRS = "input[name=" + i +"BrojRedovnihSati]";
+                var idBrPS = "input[name=" + i + "BrojPrekovremenihSati]";
+                var idpr = $(id).val();
+                var npr = $(idNaziv).val();
+                var brs = $(idBrRS).val();
+                var prs = $(idBrPS).val();
+                var brzs = $(idBrS).text() + ":" + $(idBrM).text() + ":" + $(idBrSek).text();
+                var projektEvidencija = {
+                    IDProjekt: idpr,
+                    NazivProjekta: npr,
+                    BrojZabiljezenihSati: brzs,
+                     BrojRedovnihSati: brs,
+                     BrojPrekovremenihSati: prs,
+  StartVrijeme: "00:00:00",
+  StopVrijeme:"00:00:00"
+                }
+
+                listaProjekata.push(projektEvidencija);
+            }
+
+            var listaProjektEvidencija = JSON.stringify(listaProjekata);
+
+
+            EvidencijaVM = {
+
+                DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+
+                ProjektiEvidencija: listaProjektEvidencija
+
+            }
+
+
+            $.ajax({
+
+                url: "@Url.Action(controllerName:"Evidencija", actionName:"Spremi")",
+
+                data: EvidencijaVM,
+
+                statusCode: {
+
+                    200: function () {
+
+alert("Promjene su spremljene!")
+
+                    }
+
+                }
+
+            });
+        });
+
+
+        $("#Predaj").on("click", function (e) {
+            e.preventDefault();
+            const { iddjelatnik, datumsatnice } = this.dataset;
+
+            $("#Spremi").click();
+
+            var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+var dateTime = date+' '+time;
+                    EvidencijaVM = {
+
+                DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+
+                        Status: "Čekanje",
+                        DatumSlanja: dateTime
+
+            }
+
+            $.ajax({
+
+                url: "@Url.Action(controllerName:"Evidencija", actionName:"Predaj")",
+                   data: EvidencijaVM,
+                statusCode: {
+
+                    200: function () {
+
+                        $("form").submit()
+
+                    }
+
+                }
+
+            });
+        });*@
+
+    </script>
+
+}

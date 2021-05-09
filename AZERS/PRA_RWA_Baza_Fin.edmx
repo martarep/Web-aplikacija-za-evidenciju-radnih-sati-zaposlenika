@@ -1,0 +1,610 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PRA_RWA_Baza_FinModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Djelatnik">
+          <Key>
+            <PropertyRef Name="IDDjelatnik" />
+          </Key>
+          <Property Name="IDDjelatnik" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prezime" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DatumZaposlenja" Type="date" Nullable="false" />
+          <Property Name="Lozinka" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TipDjelatnikaID" Type="int" Nullable="false" />
+          <Property Name="TimID" Type="int" />
+          <Property Name="Aktivan" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Jezik" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Klijent">
+          <Key>
+            <PropertyRef Name="IDKlijent" />
+          </Key>
+          <Property Name="IDKlijent" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telefon" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Aktivan" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Projekt">
+          <Key>
+            <PropertyRef Name="IDProjekt" />
+          </Key>
+          <Property Name="IDProjekt" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="KlijentID" Type="int" Nullable="false" />
+          <Property Name="DatumOtvaranja" Type="date" Nullable="false" />
+          <Property Name="VoditeljProjektaID" Type="int" Nullable="false" />
+          <Property Name="Aktivan" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjektDjelatnik">
+          <Key>
+            <PropertyRef Name="IDProjektDjelatnik" />
+          </Key>
+          <Property Name="IDProjektDjelatnik" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjektID" Type="int" Nullable="false" />
+          <Property Name="DjelatnikID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Satnica">
+          <Key>
+            <PropertyRef Name="IDSatnica" />
+          </Key>
+          <Property Name="IDSatnica" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrojZabiljezenihSati" Type="time" Precision="7" />
+          <Property Name="BrojRedovnihSati" Type="time" Precision="7" />
+          <Property Name="BrojPrekovremenihSati" Type="time" Precision="7" />
+          <Property Name="StartVrijeme" Type="time" Precision="7" />
+          <Property Name="StopVrijeme" Type="time" Precision="7" />
+          <Property Name="VrijemeSlanjaSatnice" Type="time" Precision="7" />
+          <Property Name="DatumSatnice" Type="date" Nullable="false" />
+          <Property Name="DatumSlanjaSatnice" Type="date" />
+          <Property Name="StatusSatnice" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProjektID" Type="int" Nullable="false" />
+          <Property Name="KlijentID" Type="int" Nullable="false" />
+          <Property Name="DjelatnikID" Type="int" Nullable="false" />
+          <Property Name="TimID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tim">
+          <Key>
+            <PropertyRef Name="IDTim" />
+          </Key>
+          <Property Name="IDTim" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DatumKreiranja" Type="date" Nullable="false" />
+          <Property Name="Aktivan" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipDjelatnika">
+          <Key>
+            <PropertyRef Name="IDTipDjelatnika" />
+          </Key>
+          <Property Name="IDTipDjelatnika" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Djelatnik_Tim">
+          <End Role="Tim" Type="Self.Tim" Multiplicity="0..1" />
+          <End Role="Djelatnik" Type="Self.Djelatnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tim">
+              <PropertyRef Name="IDTim" />
+            </Principal>
+            <Dependent Role="Djelatnik">
+              <PropertyRef Name="TimID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Djelatnik_TipDjelatnika">
+          <End Role="TipDjelatnika" Type="Self.TipDjelatnika" Multiplicity="1" />
+          <End Role="Djelatnik" Type="Self.Djelatnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipDjelatnika">
+              <PropertyRef Name="IDTipDjelatnika" />
+            </Principal>
+            <Dependent Role="Djelatnik">
+              <PropertyRef Name="TipDjelatnikaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projekt_Klijent">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Projekt" Type="Self.Projekt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="IDKlijent" />
+            </Principal>
+            <Dependent Role="Projekt">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjektDjelatnik_Djelatnik">
+          <End Role="Djelatnik" Type="Self.Djelatnik" Multiplicity="1" />
+          <End Role="ProjektDjelatnik" Type="Self.ProjektDjelatnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Djelatnik">
+              <PropertyRef Name="IDDjelatnik" />
+            </Principal>
+            <Dependent Role="ProjektDjelatnik">
+              <PropertyRef Name="DjelatnikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjektDjelatnik_Projekt">
+          <End Role="Projekt" Type="Self.Projekt" Multiplicity="1" />
+          <End Role="ProjektDjelatnik" Type="Self.ProjektDjelatnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projekt">
+              <PropertyRef Name="IDProjekt" />
+            </Principal>
+            <Dependent Role="ProjektDjelatnik">
+              <PropertyRef Name="ProjektID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Satnica_Djelatnik">
+          <End Role="Djelatnik" Type="Self.Djelatnik" Multiplicity="1" />
+          <End Role="Satnica" Type="Self.Satnica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Djelatnik">
+              <PropertyRef Name="IDDjelatnik" />
+            </Principal>
+            <Dependent Role="Satnica">
+              <PropertyRef Name="DjelatnikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Satnica_Klijent">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Satnica" Type="Self.Satnica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="IDKlijent" />
+            </Principal>
+            <Dependent Role="Satnica">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Satnica_Projekt">
+          <End Role="Projekt" Type="Self.Projekt" Multiplicity="1" />
+          <End Role="Satnica" Type="Self.Satnica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projekt">
+              <PropertyRef Name="IDProjekt" />
+            </Principal>
+            <Dependent Role="Satnica">
+              <PropertyRef Name="ProjektID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Satnica_Tim">
+          <End Role="Tim" Type="Self.Tim" Multiplicity="1" />
+          <End Role="Satnica" Type="Self.Satnica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tim">
+              <PropertyRef Name="IDTim" />
+            </Principal>
+            <Dependent Role="Satnica">
+              <PropertyRef Name="TimID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PRA_RWA_Baza_FinModelStoreContainer">
+          <EntitySet Name="Djelatnik" EntityType="Self.Djelatnik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Klijent" EntityType="Self.Klijent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Projekt" EntityType="Self.Projekt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjektDjelatnik" EntityType="Self.ProjektDjelatnik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Satnica" EntityType="Self.Satnica" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tim" EntityType="Self.Tim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipDjelatnika" EntityType="Self.TipDjelatnika" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Djelatnik_Tim" Association="Self.FK_Djelatnik_Tim">
+            <End Role="Tim" EntitySet="Tim" />
+            <End Role="Djelatnik" EntitySet="Djelatnik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Djelatnik_TipDjelatnika" Association="Self.FK_Djelatnik_TipDjelatnika">
+            <End Role="TipDjelatnika" EntitySet="TipDjelatnika" />
+            <End Role="Djelatnik" EntitySet="Djelatnik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projekt_Klijent" Association="Self.FK_Projekt_Klijent">
+            <End Role="Klijent" EntitySet="Klijent" />
+            <End Role="Projekt" EntitySet="Projekt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjektDjelatnik_Djelatnik" Association="Self.FK_ProjektDjelatnik_Djelatnik">
+            <End Role="Djelatnik" EntitySet="Djelatnik" />
+            <End Role="ProjektDjelatnik" EntitySet="ProjektDjelatnik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjektDjelatnik_Projekt" Association="Self.FK_ProjektDjelatnik_Projekt">
+            <End Role="Projekt" EntitySet="Projekt" />
+            <End Role="ProjektDjelatnik" EntitySet="ProjektDjelatnik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Satnica_Djelatnik" Association="Self.FK_Satnica_Djelatnik">
+            <End Role="Djelatnik" EntitySet="Djelatnik" />
+            <End Role="Satnica" EntitySet="Satnica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Satnica_Klijent" Association="Self.FK_Satnica_Klijent">
+            <End Role="Klijent" EntitySet="Klijent" />
+            <End Role="Satnica" EntitySet="Satnica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Satnica_Projekt" Association="Self.FK_Satnica_Projekt">
+            <End Role="Projekt" EntitySet="Projekt" />
+            <End Role="Satnica" EntitySet="Satnica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Satnica_Tim" Association="Self.FK_Satnica_Tim">
+            <End Role="Tim" EntitySet="Tim" />
+            <End Role="Satnica" EntitySet="Satnica" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PRA_RWA_Baza_FinModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Djelatnik">
+          <Key>
+            <PropertyRef Name="IDDjelatnik" />
+          </Key>
+          <Property Name="IDDjelatnik" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Prezime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DatumZaposlenja" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Lozinka" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TipDjelatnikaID" Type="Int32" Nullable="false" />
+          <Property Name="TimID" Type="Int32" />
+          <Property Name="Aktivan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Jezik" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Tim" Relationship="Self.FK_Djelatnik_Tim" FromRole="Djelatnik" ToRole="Tim" />
+          <NavigationProperty Name="TipDjelatnika" Relationship="Self.FK_Djelatnik_TipDjelatnika" FromRole="Djelatnik" ToRole="TipDjelatnika" />
+          <NavigationProperty Name="ProjektDjelatniks" Relationship="Self.FK_ProjektDjelatnik_Djelatnik" FromRole="Djelatnik" ToRole="ProjektDjelatnik" />
+          <NavigationProperty Name="Satnicas" Relationship="Self.FK_Satnica_Djelatnik" FromRole="Djelatnik" ToRole="Satnica" />
+        </EntityType>
+        <EntityType Name="Klijent">
+          <Key>
+            <PropertyRef Name="IDKlijent" />
+          </Key>
+          <Property Name="IDKlijent" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telefon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Aktivan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Projekts" Relationship="Self.FK_Projekt_Klijent" FromRole="Klijent" ToRole="Projekt" />
+          <NavigationProperty Name="Satnicas" Relationship="Self.FK_Satnica_Klijent" FromRole="Klijent" ToRole="Satnica" />
+        </EntityType>
+        <EntityType Name="Projekt">
+          <Key>
+            <PropertyRef Name="IDProjekt" />
+          </Key>
+          <Property Name="IDProjekt" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="KlijentID" Type="Int32" Nullable="false" />
+          <Property Name="DatumOtvaranja" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="VoditeljProjektaID" Type="Int32" Nullable="false" />
+          <Property Name="Aktivan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Klijent" Relationship="Self.FK_Projekt_Klijent" FromRole="Projekt" ToRole="Klijent" />
+          <NavigationProperty Name="ProjektDjelatniks" Relationship="Self.FK_ProjektDjelatnik_Projekt" FromRole="Projekt" ToRole="ProjektDjelatnik" />
+          <NavigationProperty Name="Satnicas" Relationship="Self.FK_Satnica_Projekt" FromRole="Projekt" ToRole="Satnica" />
+        </EntityType>
+        <EntityType Name="ProjektDjelatnik">
+          <Key>
+            <PropertyRef Name="IDProjektDjelatnik" />
+          </Key>
+          <Property Name="IDProjektDjelatnik" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjektID" Type="Int32" Nullable="false" />
+          <Property Name="DjelatnikID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Djelatnik" Relationship="Self.FK_ProjektDjelatnik_Djelatnik" FromRole="ProjektDjelatnik" ToRole="Djelatnik" />
+          <NavigationProperty Name="Projekt" Relationship="Self.FK_ProjektDjelatnik_Projekt" FromRole="ProjektDjelatnik" ToRole="Projekt" />
+        </EntityType>
+        <EntityType Name="Satnica">
+          <Key>
+            <PropertyRef Name="IDSatnica" />
+          </Key>
+          <Property Name="IDSatnica" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrojZabiljezenihSati" Type="Time" Precision="7" />
+          <Property Name="BrojRedovnihSati" Type="Time" Precision="7" />
+          <Property Name="BrojPrekovremenihSati" Type="Time" Precision="7" />
+          <Property Name="StartVrijeme" Type="Time" Precision="7" />
+          <Property Name="StopVrijeme" Type="Time" Precision="7" />
+          <Property Name="VrijemeSlanjaSatnice" Type="Time" Precision="7" />
+          <Property Name="DatumSatnice" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DatumSlanjaSatnice" Type="DateTime" Precision="0" />
+          <Property Name="StatusSatnice" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProjektID" Type="Int32" Nullable="false" />
+          <Property Name="KlijentID" Type="Int32" Nullable="false" />
+          <Property Name="DjelatnikID" Type="Int32" Nullable="false" />
+          <Property Name="TimID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Djelatnik" Relationship="Self.FK_Satnica_Djelatnik" FromRole="Satnica" ToRole="Djelatnik" />
+          <NavigationProperty Name="Klijent" Relationship="Self.FK_Satnica_Klijent" FromRole="Satnica" ToRole="Klijent" />
+          <NavigationProperty Name="Projekt" Relationship="Self.FK_Satnica_Projekt" FromRole="Satnica" ToRole="Projekt" />
+          <NavigationProperty Name="Tim" Relationship="Self.FK_Satnica_Tim" FromRole="Satnica" ToRole="Tim" />
+        </EntityType>
+        <EntityType Name="Tim">
+          <Key>
+            <PropertyRef Name="IDTim" />
+          </Key>
+          <Property Name="IDTim" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DatumKreiranja" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Aktivan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Djelatniks" Relationship="Self.FK_Djelatnik_Tim" FromRole="Tim" ToRole="Djelatnik" />
+          <NavigationProperty Name="Satnicas" Relationship="Self.FK_Satnica_Tim" FromRole="Tim" ToRole="Satnica" />
+        </EntityType>
+        <EntityType Name="TipDjelatnika">
+          <Key>
+            <PropertyRef Name="IDTipDjelatnika" />
+          </Key>
+          <Property Name="IDTipDjelatnika" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Djelatniks" Relationship="Self.FK_Djelatnik_TipDjelatnika" FromRole="TipDjelatnika" ToRole="Djelatnik" />
+        </EntityType>
+        <Association Name="FK_Djelatnik_Tim">
+          <End Role="Tim" Type="Self.Tim" Multiplicity="0..1" />
+          <End Role="Djelatnik" Type="Self.Djelatnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tim">
+              <PropertyRef Name="IDTim" />
+            </Principal>
+            <Dependent Role="Djelatnik">
+              <PropertyRef Name="TimID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Djelatnik_TipDjelatnika">
+          <End Role="TipDjelatnika" Type="Self.TipDjelatnika" Multiplicity="1" />
+          <End Role="Djelatnik" Type="Self.Djelatnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipDjelatnika">
+              <PropertyRef Name="IDTipDjelatnika" />
+            </Principal>
+            <Dependent Role="Djelatnik">
+              <PropertyRef Name="TipDjelatnikaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjektDjelatnik_Djelatnik">
+          <End Role="Djelatnik" Type="Self.Djelatnik" Multiplicity="1" />
+          <End Role="ProjektDjelatnik" Type="Self.ProjektDjelatnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Djelatnik">
+              <PropertyRef Name="IDDjelatnik" />
+            </Principal>
+            <Dependent Role="ProjektDjelatnik">
+              <PropertyRef Name="DjelatnikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Satnica_Djelatnik">
+          <End Role="Djelatnik" Type="Self.Djelatnik" Multiplicity="1" />
+          <End Role="Satnica" Type="Self.Satnica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Djelatnik">
+              <PropertyRef Name="IDDjelatnik" />
+            </Principal>
+            <Dependent Role="Satnica">
+              <PropertyRef Name="DjelatnikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projekt_Klijent">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Projekt" Type="Self.Projekt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="IDKlijent" />
+            </Principal>
+            <Dependent Role="Projekt">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Satnica_Klijent">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Satnica" Type="Self.Satnica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="IDKlijent" />
+            </Principal>
+            <Dependent Role="Satnica">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjektDjelatnik_Projekt">
+          <End Role="Projekt" Type="Self.Projekt" Multiplicity="1" />
+          <End Role="ProjektDjelatnik" Type="Self.ProjektDjelatnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projekt">
+              <PropertyRef Name="IDProjekt" />
+            </Principal>
+            <Dependent Role="ProjektDjelatnik">
+              <PropertyRef Name="ProjektID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Satnica_Projekt">
+          <End Role="Projekt" Type="Self.Projekt" Multiplicity="1" />
+          <End Role="Satnica" Type="Self.Satnica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projekt">
+              <PropertyRef Name="IDProjekt" />
+            </Principal>
+            <Dependent Role="Satnica">
+              <PropertyRef Name="ProjektID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Satnica_Tim">
+          <End Role="Tim" Type="Self.Tim" Multiplicity="1" />
+          <End Role="Satnica" Type="Self.Satnica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tim">
+              <PropertyRef Name="IDTim" />
+            </Principal>
+            <Dependent Role="Satnica">
+              <PropertyRef Name="TimID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PRA_RWA_Baza_FinEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Djelatniks" EntityType="Self.Djelatnik" />
+          <EntitySet Name="Klijents" EntityType="Self.Klijent" />
+          <EntitySet Name="Projekts" EntityType="Self.Projekt" />
+          <EntitySet Name="ProjektDjelatniks" EntityType="Self.ProjektDjelatnik" />
+          <EntitySet Name="Satnicas" EntityType="Self.Satnica" />
+          <EntitySet Name="Tims" EntityType="Self.Tim" />
+          <EntitySet Name="TipDjelatnikas" EntityType="Self.TipDjelatnika" />
+          <AssociationSet Name="FK_Djelatnik_Tim" Association="Self.FK_Djelatnik_Tim">
+            <End Role="Tim" EntitySet="Tims" />
+            <End Role="Djelatnik" EntitySet="Djelatniks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Djelatnik_TipDjelatnika" Association="Self.FK_Djelatnik_TipDjelatnika">
+            <End Role="TipDjelatnika" EntitySet="TipDjelatnikas" />
+            <End Role="Djelatnik" EntitySet="Djelatniks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjektDjelatnik_Djelatnik" Association="Self.FK_ProjektDjelatnik_Djelatnik">
+            <End Role="Djelatnik" EntitySet="Djelatniks" />
+            <End Role="ProjektDjelatnik" EntitySet="ProjektDjelatniks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Satnica_Djelatnik" Association="Self.FK_Satnica_Djelatnik">
+            <End Role="Djelatnik" EntitySet="Djelatniks" />
+            <End Role="Satnica" EntitySet="Satnicas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projekt_Klijent" Association="Self.FK_Projekt_Klijent">
+            <End Role="Klijent" EntitySet="Klijents" />
+            <End Role="Projekt" EntitySet="Projekts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Satnica_Klijent" Association="Self.FK_Satnica_Klijent">
+            <End Role="Klijent" EntitySet="Klijents" />
+            <End Role="Satnica" EntitySet="Satnicas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjektDjelatnik_Projekt" Association="Self.FK_ProjektDjelatnik_Projekt">
+            <End Role="Projekt" EntitySet="Projekts" />
+            <End Role="ProjektDjelatnik" EntitySet="ProjektDjelatniks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Satnica_Projekt" Association="Self.FK_Satnica_Projekt">
+            <End Role="Projekt" EntitySet="Projekts" />
+            <End Role="Satnica" EntitySet="Satnicas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Satnica_Tim" Association="Self.FK_Satnica_Tim">
+            <End Role="Tim" EntitySet="Tims" />
+            <End Role="Satnica" EntitySet="Satnicas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PRA_RWA_Baza_FinModelStoreContainer" CdmEntityContainer="PRA_RWA_Baza_FinEntities1">
+          <EntitySetMapping Name="Djelatniks">
+            <EntityTypeMapping TypeName="PRA_RWA_Baza_FinModel.Djelatnik">
+              <MappingFragment StoreEntitySet="Djelatnik">
+                <ScalarProperty Name="IDDjelatnik" ColumnName="IDDjelatnik" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Prezime" ColumnName="Prezime" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DatumZaposlenja" ColumnName="DatumZaposlenja" />
+                <ScalarProperty Name="Lozinka" ColumnName="Lozinka" />
+                <ScalarProperty Name="TipDjelatnikaID" ColumnName="TipDjelatnikaID" />
+                <ScalarProperty Name="TimID" ColumnName="TimID" />
+                <ScalarProperty Name="Aktivan" ColumnName="Aktivan" />
+                <ScalarProperty Name="Jezik" ColumnName="Jezik" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Klijents">
+            <EntityTypeMapping TypeName="PRA_RWA_Baza_FinModel.Klijent">
+              <MappingFragment StoreEntitySet="Klijent">
+                <ScalarProperty Name="IDKlijent" ColumnName="IDKlijent" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Aktivan" ColumnName="Aktivan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projekts">
+            <EntityTypeMapping TypeName="PRA_RWA_Baza_FinModel.Projekt">
+              <MappingFragment StoreEntitySet="Projekt">
+                <ScalarProperty Name="IDProjekt" ColumnName="IDProjekt" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="KlijentID" ColumnName="KlijentID" />
+                <ScalarProperty Name="DatumOtvaranja" ColumnName="DatumOtvaranja" />
+                <ScalarProperty Name="VoditeljProjektaID" ColumnName="VoditeljProjektaID" />
+                <ScalarProperty Name="Aktivan" ColumnName="Aktivan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjektDjelatniks">
+            <EntityTypeMapping TypeName="PRA_RWA_Baza_FinModel.ProjektDjelatnik">
+              <MappingFragment StoreEntitySet="ProjektDjelatnik">
+                <ScalarProperty Name="IDProjektDjelatnik" ColumnName="IDProjektDjelatnik" />
+                <ScalarProperty Name="ProjektID" ColumnName="ProjektID" />
+                <ScalarProperty Name="DjelatnikID" ColumnName="DjelatnikID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Satnicas">
+            <EntityTypeMapping TypeName="PRA_RWA_Baza_FinModel.Satnica">
+              <MappingFragment StoreEntitySet="Satnica">
+                <ScalarProperty Name="IDSatnica" ColumnName="IDSatnica" />
+                <ScalarProperty Name="BrojZabiljezenihSati" ColumnName="BrojZabiljezenihSati" />
+                <ScalarProperty Name="BrojRedovnihSati" ColumnName="BrojRedovnihSati" />
+                <ScalarProperty Name="BrojPrekovremenihSati" ColumnName="BrojPrekovremenihSati" />
+                <ScalarProperty Name="StartVrijeme" ColumnName="StartVrijeme" />
+                <ScalarProperty Name="StopVrijeme" ColumnName="StopVrijeme" />
+                <ScalarProperty Name="VrijemeSlanjaSatnice" ColumnName="VrijemeSlanjaSatnice" />
+                <ScalarProperty Name="DatumSatnice" ColumnName="DatumSatnice" />
+                <ScalarProperty Name="DatumSlanjaSatnice" ColumnName="DatumSlanjaSatnice" />
+                <ScalarProperty Name="StatusSatnice" ColumnName="StatusSatnice" />
+                <ScalarProperty Name="ProjektID" ColumnName="ProjektID" />
+                <ScalarProperty Name="KlijentID" ColumnName="KlijentID" />
+                <ScalarProperty Name="DjelatnikID" ColumnName="DjelatnikID" />
+                <ScalarProperty Name="TimID" ColumnName="TimID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tims">
+            <EntityTypeMapping TypeName="PRA_RWA_Baza_FinModel.Tim">
+              <MappingFragment StoreEntitySet="Tim">
+                <ScalarProperty Name="IDTim" ColumnName="IDTim" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="DatumKreiranja" ColumnName="DatumKreiranja" />
+                <ScalarProperty Name="Aktivan" ColumnName="Aktivan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipDjelatnikas">
+            <EntityTypeMapping TypeName="PRA_RWA_Baza_FinModel.TipDjelatnika">
+              <MappingFragment StoreEntitySet="TipDjelatnika">
+                <ScalarProperty Name="IDTipDjelatnika" ColumnName="IDTipDjelatnika" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,688 @@
+﻿@using AZERS.Models
+
+@model AZERS.Models.ProjektEvidencijaVM
+
+
+
+@{
+
+    ViewBag.Title = "ShowPodaci";
+
+    var brojProjekata = Model.ProjektiEvidencija.Count;
+
+    var idProjekata = new List<string>();
+
+    foreach (var item in Model.ProjektiEvidencija)
+    {
+        idProjekata.Add(item.IDProjekt.ToString());
+    }
+
+}
+
+
+
+<h2 class="description"> <i class="glyphicon glyphicon-time"></i> Vođenje evidencije</h2>
+
+<hr />
+
+
+<div class="height">
+
+    @using (Html.BeginForm())
+    {
+
+        if (Model.StatusSatnice == "Evidentiranje")
+
+        {
+
+
+            @Html.HiddenFor(m => m.SaveOrDate);
+            @Html.HiddenFor(m => m.IdDjelatnik);
+            <div class="lbl form-inline">
+
+                <i class="glyphicon glyphicon-calendar"></i> Datum: @Html.TextBoxFor(m => m.DatumSatnice, "{0:yyyy-MM-dd}", new { Type = "date", @class = "form-control ", data_datumsatnice = Model.DatumSatnice })
+
+
+                @Html.ActionLink(linkText: "Spremi",
+
+                 actionName: "Spremi",
+
+                 htmlAttributes: new
+
+                 {
+
+                     @class = " btn btn_o btnp",
+
+                     data_iddjelatnik = Model.IdDjelatnik,
+
+                     data_datumsatnice = Model.DatumSatnice,
+                     data_brojprojekata = brojProjekata,
+
+                     id = "Spremi"
+
+                 }, routeValues: new { idDjelatnika = Model.IdDjelatnik, datumSatnice = Model.DatumSatnice })
+
+
+                @Html.ActionLink(linkText: "Predaj",
+
+                                                 actionName: "Predaj",
+
+                                                 htmlAttributes: new
+
+                                                 {
+
+                                                     @class = " btn btn_o btnp",
+
+                                                     data_iddjelatnik = Model.IdDjelatnik,
+
+                                                     data_datumsatnice = Model.DatumSatnice,
+
+                                                     id = "Predaj"
+
+                                                 }, routeValues: new { idDjelatnika = Model.IdDjelatnik, datumSatnice = Model.DatumSatnice })
+
+
+
+            </div>
+
+
+
+            <table class="table_custom" id="table">
+
+                <thead>
+
+                    <tr>
+
+                        <td class="table_header">Projekt</td>
+
+                        <td class="table_header">Zabilježeno</td>
+
+                        <td class="table_header">Start</td>
+
+                        <td class="table_header">Stop</td>
+
+                        <td class="table_header">Redovni sati</td>
+
+                        <td class="table_header">Prekovremeni sati</td>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @for (int i = 0; i < Model.ProjektiEvidencija.Count; i++)
+                    {
+
+                        <tr>
+                            @Html.Hidden(Model.ProjektiEvidencija[i].IDProjekt + "IDProjekta", Model.ProjektiEvidencija[i].IDProjekt)
+                            <td class="table_data">
+                                @Html.Hidden(Model.ProjektiEvidencija[i].IDProjekt + "NazivProjekta", Model.ProjektiEvidencija[i].NazivProjekta)
+                                @Html.Label("NazivProjekta", Model.ProjektiEvidencija[i].NazivProjekta)
+
+                            </td>
+
+                            <td class="table_data">
+                                @if (Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Hours < 10)
+                                {
+                                    @Html.Label("0" + Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Hours.ToString(), new { id = Model.ProjektiEvidencija[i].IDProjekt + "BrojZabiljezenihSati" })
+                                }
+                                @if (Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Hours > 10)
+                                {
+                                    @Html.Label(Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Hours.ToString(), new { id = Model.ProjektiEvidencija[i].IDProjekt + "BrojZabiljezenihSati" })
+                                }
+                                :
+                                @if (Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Minutes < 10)
+                                {
+                                    @Html.Label("0" + Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Minutes.ToString(), new { id = Model.ProjektiEvidencija[i].IDProjekt + "BrojZabiljezenihMinuta" })
+                                }
+                                @if (Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Minutes > 10)
+                                {
+                                    @Html.Label(Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Minutes.ToString(), new { id = Model.ProjektiEvidencija[i].IDProjekt + "BrojZabiljezenihMinuta" })
+                                }
+                                :
+                                @if (Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Seconds < 10)
+                                {
+                                    @Html.Label("0" + Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Seconds.ToString(), new { id = Model.ProjektiEvidencija[i].IDProjekt + "BrojZabiljezenihSekundi" })
+
+                                }
+                                @if (Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Seconds > 10)
+                                {
+                                    @Html.Label(Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Seconds.ToString(), new { id = Model.ProjektiEvidencija[i].IDProjekt + "BrojZabiljezenihSekundi" })
+
+                                }
+
+                            </td>
+
+                            <td class="table_data">
+
+                                @Html.ActionLink(linkText: "Start",
+
+            actionName: "Start",
+
+            htmlAttributes: new
+
+            {
+
+                id = "Start" + Model.ProjektiEvidencija[i].IDProjekt,
+
+                @class = "btn btn-success",
+
+                data_idprojekt = Model.ProjektiEvidencija[i].IDProjekt,
+
+                data_iddjelatnik = Model.IdDjelatnik,
+
+                data_datumsatnice = Model.DatumSatnice,
+
+                data_vrijeme = DateTime.Now.TimeOfDay,
+
+                data_sekunde = Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Seconds.ToString(),
+
+                data_minute = Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Minutes.ToString(),
+
+                data_sati = Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Hours.ToString()
+
+            }, routeValues: new { idProjekt = Model.ProjektiEvidencija[i].IDProjekt, idDjelatnik = Model.IdDjelatnik, startVrijeme = DateTime.Now.TimeOfDay, datumSatnice = Model.DatumSatnice })
+
+                            </td>
+
+                            <td class="table_data">
+
+                                @Html.ActionLink(linkText: "Stop",
+
+                             actionName: "Stop",
+
+                             htmlAttributes: new
+
+                             {
+
+                                 id = "Stop" + Model.ProjektiEvidencija[i].IDProjekt,
+
+                                 @class = "btn btn-danger",
+
+                                 data_idprojekt = Model.ProjektiEvidencija[i].IDProjekt,
+
+                                 data_iddjelatnik = Model.IdDjelatnik,
+
+                                 data_datumsatnice = Model.DatumSatnice,
+
+                                 data_vrijeme = DateTime.Now.TimeOfDay,
+
+                                 data_sekunde = Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Seconds.ToString(),
+
+                                 data_minute = Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Minutes.ToString(),
+
+                                 data_sati = Model.ProjektiEvidencija[i].BrojZabiljezenihSati.Hours.ToString()
+
+                             }, routeValues: new { idProjekt = Model.ProjektiEvidencija[i].IDProjekt, idDjelatnik = Model.IdDjelatnik, stopVrijeme = DateTime.Now.TimeOfDay, datumSatnice = Model.DatumSatnice })
+
+                            </td>
+
+                            <td class="table_data">
+                                @Html.TextBox(Model.ProjektiEvidencija[i].IDProjekt + "BrojRedovnihSati", Model.ProjektiEvidencija[i].BrojRedovnihSati, new { @class = "form-control" })
+                            </td>
+
+                            <td class="table_data">
+
+                                @Html.TextBox(Model.ProjektiEvidencija[i].IDProjekt + "BrojPrekovremenihSati", Model.ProjektiEvidencija[i].BrojPrekovremenihSati, new { @class = "form-control" })
+                            </td>
+
+                        </tr>
+
+                    }
+
+                    <tr>
+
+                        <td class="table_header">Ukupno:</td>
+
+                        <td class="table_data"></td>
+
+                        <td class="table_data"></td>
+
+                        <td class="table_data"></td>
+
+                        <td class="table_data"> @Model.UkupnoRedovnihSati </td>
+
+                        <td class="table_data">@Model.UkupnoPrekovremenihSati </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        }
+    else
+    {
+
+    <div class="lbl form-inline">
+
+        <i class="glyphicon glyphicon-calendar"></i> Datum: @Html.TextBoxFor(m => m.DatumSatnice, "{0:yyyy-MM-dd}", new { Type = "date", @class = "form-control ", data_datumsatnice = Model.DatumSatnice })
+
+    </div>
+
+    <div class="center lbl">
+
+        Satnica je poslana na provjeru!
+
+    </div>
+    }
+    }
+</div>
+
+
+@section scripts{
+
+    <script>
+
+        $("#DatumSatnice").change(() => {
+
+            $("#SaveOrDate").val("date")
+            $("form").submit()
+        });
+
+
+        var seconds = 0;
+
+        var minutes = 0;
+
+        var hours = 0;
+
+        var idSati = "";
+
+        var idMinuta = "";
+
+                        var idSekundi = "";
+
+                        var  interval = null;
+
+       var idZadnjegProjekta = 0;
+
+       counter = 0;
+
+                        var status = "stopirano";
+
+                        function defineVars(idprojekt, sekunde, minute, sati) {
+
+                            if ( idZadnjegProjekta != idprojekt) {
+
+                                seconds = sekunde;
+
+                                minutes = minute;
+
+                                hours = sati;
+
+                                idSati = "#" + idprojekt + "BrojZabiljezenihSati";
+
+                                idMinuta = "#" + idprojekt + "BrojZabiljezenihMinuta";
+
+                                idSekundi = "#" + idprojekt + "BrojZabiljezenihSekundi";
+
+                            }
+
+                        }
+
+
+
+
+
+        function stopWatch() {
+
+
+
+
+
+
+
+        let displaySeconds = 0;
+
+        let displayMinutes = 0;
+
+            let displayHours = 0;
+
+
+
+            seconds++;
+
+
+
+            if (seconds / 60 === 1) {
+
+                seconds = 0;
+
+                minutes++;
+
+
+
+                if (minutes / 60 === 1) {
+
+                    minutes = 0;
+
+                    hours++;
+
+                }
+
+
+
+            }
+
+
+
+
+
+            if (seconds < 10) {
+
+                displaySeconds = "0" + seconds.toString();
+
+            }
+
+            else {
+
+                displaySeconds = seconds;
+
+            }
+
+
+
+            if (minutes < 10) {
+
+                displayMinutes = "0" + minutes.toString();
+
+            }
+
+            else {
+
+                displayMinutes = minutes;
+
+            }
+
+
+
+            if (hours < 10) {
+
+                displayHours = "0" + hours.toString();
+
+            }
+
+            else {
+
+                displayHours = hours;
+
+            }
+
+
+
+
+
+                $(idSati).text(displayHours);
+
+            $(idMinuta).text(displayMinutes);
+
+            $(idSekundi).text(displaySeconds);
+
+
+        }
+
+        function startTimer() {
+
+
+                interval = window.setInterval(stopWatch, 1000);
+
+            status = "pokrenuto";
+
+        }
+
+
+
+        function stopTimer() {
+
+
+
+            window.clearInterval(interval);
+
+            status = "stopirano";
+
+
+
+        }
+
+
+        $(".btn-success").on("click", function (e) {
+
+            e.preventDefault();
+
+            const { iddjelatnik, vrijeme, datumsatnice, idprojekt, sekunde, minute, sati } = this.dataset;
+
+
+
+            satnicaPodaci = {
+
+                DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+
+                IDProjekt: idprojekt,
+
+                Vrijeme: vrijeme
+
+            }
+
+
+
+            defineVars(idprojekt, sekunde, minute, sati);
+
+            idZadnjegProjekta = idprojekt;
+
+
+
+            if (status == "stopirano") {
+
+                startTimer();
+
+            }
+
+            else {
+
+                $("#Stop" + idprojekt).click();
+                startTimer();
+
+            }
+
+
+
+            $.ajax({
+
+                url: "@Url.Action(controllerName:"Evidencija",actionName:"Start")",
+
+                data: satnicaPodaci,
+
+                statusCode: {
+
+                    200: function () {
+
+
+
+                    }
+
+                }
+
+            });
+
+
+
+        });
+
+
+
+        $(".btn-danger").on("click", function (e) {
+
+            e.preventDefault();
+
+            const { iddjelatnik, vrijeme, datumsatnice, idprojekt } = this.dataset;
+
+
+
+            satnicaPodaci = {
+
+                DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+
+                IDProjekt: idprojekt,
+
+                Vrijeme: vrijeme
+
+            }
+
+
+            if (status == "pokrenuto") {
+                stopTimer();
+            }
+
+
+
+            $.ajax({
+
+                url: "@Url.Action(controllerName:"Evidencija",actionName:"Stop")",
+
+                data: satnicaPodaci,
+
+                statusCode: {
+
+                    200: function () {
+
+
+
+                    }
+
+                }
+
+            });
+
+        });
+
+
+
+
+
+
+
+
+        $("#Spremi").on("click", function (e) {
+            e.preventDefault();
+
+            const { iddjelatnik, datumsatnice,  brojprojekata } = this.dataset;
+
+
+            
+            if (status == "pokrenuto") {
+                stopTimer();
+            }
+
+            var listaProjekata = [];
+             var idprojekata = @Html.Raw(Json.Encode(idProjekata));
+            for (var j = 0; j < brojprojekata; j++) {
+                var i = idprojekata[j];
+                     var id = "input[name=" + i + "IDProjekta]";
+                     var idNaziv = "input[name=" + i + "NazivProjekta]";
+            var idBrS ="#" + i + "BrojZabiljezenihSati";
+            var idBrM ="#" + i + "BrojZabiljezenihMinuta";
+            var idBrSek ="#" + i + "BrojZabiljezenihSekundi";
+            var idBrRS = "input[name=" + i +"BrojRedovnihSati]";
+                var idBrPS = "input[name=" + i + "BrojPrekovremenihSati]";
+                var idpr = $(id).val();
+                var npr = $(idNaziv).val();
+                var brs = $(idBrRS).val();
+                var prs = $(idBrPS).val();
+                var brzs = $(idBrS).text() + ":" + $(idBrM).text() + ":" + $(idBrSek).text();
+                var projektEvidencija = {
+                    IDProjekt: idpr,
+                    NazivProjekta: npr,
+                    BrojZabiljezenihSati: brzs,
+                     BrojRedovnihSati: brs,
+                     BrojPrekovremenihSati: prs,
+  StartVrijeme: "00:00:00",
+  StopVrijeme:"00:00:00"
+                }
+
+                listaProjekata.push(projektEvidencija);
+            }
+
+            var listaProjektEvidencija = JSON.stringify(listaProjekata);
+
+
+            EvidencijaVM = {
+
+                DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+
+                ProjektiEvidencija: listaProjektEvidencija
+
+            }
+
+
+            $.ajax({
+
+                url: "@Url.Action(controllerName:"Evidencija", actionName:"Spremi")",
+
+                data: EvidencijaVM,
+
+                statusCode: {
+
+                    200: function () {
+
+alert("Promjene su spremljene!")
+
+                    }
+
+                }
+
+            });
+        });
+
+
+        $("#Predaj").on("click", function (e) {
+            e.preventDefault();
+            const { iddjelatnik, datumsatnice } = this.dataset;
+
+            if (confirm("Jeste li sigurni da želite predati satnicu? (Nespremljene promjene se neće uvažiti)")) {
+                            var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+var dateTime = date+' '+time;
+                    EvidencijaVM = {
+
+                DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+
+                        Status: "Čekanje",
+                        DatumSlanja: dateTime
+
+            }
+
+            $.ajax({
+
+                url: "@Url.Action(controllerName:"Evidencija", actionName:"Predaj")",
+                   data: EvidencijaVM,
+                statusCode: {
+
+                    200: function () {
+
+                        $("form").submit()
+
+                    }
+
+                }
+
+            });
+            }
+
+
+        });
+
+    </script>
+
+}
+

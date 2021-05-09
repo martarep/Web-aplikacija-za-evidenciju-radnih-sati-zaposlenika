@@ -1,0 +1,54 @@
+﻿@using AZERS.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Prijava";
+}
+
+<h2 class="description">@ViewBag.Title</h2>
+<hr />
+    <section id="loginForm">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "center height", role = "form" }))
+        {
+            <div class="login">
+                @Html.AntiForgeryToken()
+                <h4 class="prijava_naslov center">Prijavi se i započni s radom!</h4>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group ml">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-3 prijava_label mb" })
+                    <div class="col-md-9 mb">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group ml">
+
+                    @Html.Label("Lozinka", "Lozinka", new { @class = "col-md-3 prijava_label mb" })
+                    <div class="col-md-9 mb">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-4 col-md-10">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.Label("Zapamti me", new { @class = "prijava_label" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-10">
+                        <input type="submit" value="Prijavi se" class="btn btn_prijava" />
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    </section>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

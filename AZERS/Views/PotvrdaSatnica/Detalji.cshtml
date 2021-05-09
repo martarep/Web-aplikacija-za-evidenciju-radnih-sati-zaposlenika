@@ -1,0 +1,291 @@
+﻿@model AZERS.Models.ProjektEvidencijaVM
+
+@{
+
+   var ImePrezime = ViewData["ImePrezime"];
+
+    var brojProjekata = Model.ProjektiEvidencija.Count;
+
+    var idProjekata = new List<string>();
+
+    foreach (var item in Model.ProjektiEvidencija)
+    {
+        idProjekata.Add(item.IDProjekt.ToString());
+    }
+
+
+}
+
+
+
+<h2 class="description"> <i class="glyphicon glyphicon-time"></i> Evidencija - @ImePrezime </h2>
+
+<hr />
+
+
+<div class="height">
+    
+    @using (Html.BeginForm())
+    {
+        if(Model.StatusSatnice == "Čekanje") { 
+        @Html.HiddenFor(m => m.IdDjelatnik);
+        <div class="lbl form-inline">
+
+            <i class="glyphicon glyphicon-calendar"></i> Datum: @Html.LabelFor(m => m.DatumSatnice, Model.DatumSatnice.ToShortDateString(), new { @class = "datum", data_datumsatnice = Model.DatumSatnice })
+
+
+            @Html.ActionLink(linkText: "Spremi",
+
+                      actionName: "Spremi",
+
+                      htmlAttributes: new
+
+                      {
+
+                          @class = " btn btn_o btnp",
+
+                          data_iddjelatnik = Model.IdDjelatnik,
+
+                          data_datumsatnice = Model.DatumSatnice,
+                          data_brojprojekata = brojProjekata,
+
+                          id = "Spremi"
+
+                      }, routeValues: new { idDjelatnika = Model.IdDjelatnik, datumSatnice = Model.DatumSatnice })
+
+
+            @Html.ActionLink(linkText: "Potvrdi",
+
+                                                      actionName: "Potvrdi",
+
+                                                      htmlAttributes: new
+
+                                                      {
+
+                                                          @class = " btn btn_o btnp",
+
+                                                          data_iddjelatnik = Model.IdDjelatnik,
+
+                                                          data_datumsatnice = Model.DatumSatnice,
+
+                                                          id = "Potvrdi"
+
+                                                      }, routeValues: new { idDjelatnika = Model.IdDjelatnik, datumSatnice = Model.DatumSatnice })
+
+
+
+        </div>
+
+
+
+        <table class="table_custom" id="table">
+
+            <thead>
+
+                <tr>
+
+                    <td class="table_header">Projekt</td>
+
+                    <td class="table_header">Redovni sati</td>
+
+                    <td class="table_header">Prekovremeni sati</td>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @for (int i = 0; i < Model.ProjektiEvidencija.Count; i++)
+                {
+
+                    <tr>
+                        @Html.Hidden(Model.ProjektiEvidencija[i].IDProjekt + "IDProjekta", Model.ProjektiEvidencija[i].IDProjekt)
+                        @Html.Hidden(Model.ProjektiEvidencija[i].IDProjekt + "BrojZabiljezenihSati", Model.ProjektiEvidencija[i].BrojZabiljezenihSati)
+                        <td class="table_data">
+                            @Html.Hidden(Model.ProjektiEvidencija[i].IDProjekt + "NazivProjekta", Model.ProjektiEvidencija[i].NazivProjekta)
+                            @Html.Label("NazivProjekta", Model.ProjektiEvidencija[i].NazivProjekta)
+
+                        </td>
+
+                        <td class="table_data">
+                            @Html.TextBox(Model.ProjektiEvidencija[i].IDProjekt + "BrojRedovnihSati", Model.ProjektiEvidencija[i].BrojRedovnihSati, new { @class = "form-control" })
+                        </td>
+
+                        <td class="table_data">
+
+                            @Html.TextBox(Model.ProjektiEvidencija[i].IDProjekt + "BrojPrekovremenihSati", Model.ProjektiEvidencija[i].BrojPrekovremenihSati, new { @class = "form-control" })
+                        </td>
+
+                    </tr>
+
+                }
+
+                <tr>
+
+                    <td class="table_header">Ukupno:</td>
+
+                    <td class="table_data"> @Model.UkupnoRedovnihSati </td>
+
+                    <td class="table_data">@Model.UkupnoPrekovremenihSati </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+                }
+
+        else if (Model.StatusSatnice == "Evidentiranje") {
+        <div class="lbl form-inline">
+
+            <i class="glyphicon glyphicon-calendar"></i> Datum: @Html.LabelFor(m => m.DatumSatnice, Model.DatumSatnice.ToShortDateString(), new { @class = "datum", data_datumsatnice = Model.DatumSatnice })
+
+        </div>
+
+        <div class="center lbl">
+
+            Satnica je vraćena na evidentiranje!
+
+        </div>
+    }
+
+    else
+    {
+    <div class="lbl form-inline">
+
+        <i class="glyphicon glyphicon-calendar"></i> Datum: @Html.LabelFor(m => m.DatumSatnice, Model.DatumSatnice.ToShortDateString(), new { @class = "datum", data_datumsatnice = Model.DatumSatnice })
+
+    </div>
+
+    <div class="center lbl">
+
+        Satnica je potvrđena!
+
+    </div>
+    }
+    }
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+</div>
+@section scripts{
+
+    <script>
+
+        var idProjekt = 0;
+        $("#Spremi").on("click", function (e) {
+            e.preventDefault();
+
+            const { iddjelatnik, datumsatnice,  brojprojekata } = this.dataset;
+
+
+            var listaProjekata = [];
+             var idprojekata = @Html.Raw(Json.Encode(idProjekata));
+            for (var j = 0; j < brojprojekata; j++) {
+                var i = idprojekata[j];
+                idProjekt = i;
+                     var id = "input[name=" + i + "IDProjekta]";
+                     var idNaziv = "input[name=" + i + "NazivProjekta]";
+            var idBrRS = "input[name=" + i +"BrojRedovnihSati]";
+                var idBrPS = "input[name=" + i + "BrojPrekovremenihSati]";
+                var idBrZS = "input[name=" + i + "BrojZabiljezenihSati]";
+                var idpr = $(id).val();
+                var npr = $(idNaziv).val();
+                var brs = $(idBrRS).val();
+                var prs = $(idBrPS).val();
+                var brzs =$(idBrZS).val();
+                var projektEvidencija = {
+                    IDProjekt: idpr,
+                    NazivProjekta: npr,
+                    BrojZabiljezenihSati: brzs,
+                     BrojRedovnihSati: brs,
+                     BrojPrekovremenihSati: prs,
+  StartVrijeme: "00:00:00",
+  StopVrijeme:"00:00:00"
+                }
+
+                listaProjekata.push(projektEvidencija);
+            }
+
+            var listaProjektEvidencija = JSON.stringify(listaProjekata);
+
+
+            EvidencijaVM = {
+
+                DatumSatnica: datumsatnice,
+
+                IDDjelatnik: iddjelatnik,
+
+                ProjektiEvidencija: listaProjektEvidencija
+
+            }
+
+
+            $.ajax({
+
+                url: "@Url.Action(controllerName:"Evidencija", actionName:"Spremi")",
+
+                data: EvidencijaVM,
+
+                statusCode: {
+
+                    200: function () {
+
+alert("Promjene su spremljene!")
+
+                    }
+
+                }
+
+            });
+        });
+
+
+        $("#Potvrdi").on("click", function (e) {
+            e.preventDefault();
+            const { iddjelatnik, datumsatnice } = this.dataset;
+
+            if (confirm("Jeste li sigurni da želite potvrditi satnicu? (Nespremljene promjene se neće uvažiti)")) {
+
+
+                EvidencijaVM = {
+
+                    DatumSatnica: datumsatnice,
+
+                    IDDjelatnik: iddjelatnik,
+
+                    Status: "Potvrđeno"
+                }
+
+                $.ajax({
+
+                    url: "@Url.Action(controllerName:"PotvrdaSatnica", actionName:"Potvrdi")",
+                    data: EvidencijaVM,
+                    statusCode: {
+
+                        200: function () {
+                          
+                            $("form").submit();
+                        }
+
+                    }
+
+                });
+
+            }
+        });
+
+    </script>
+
+}

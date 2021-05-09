@@ -1,0 +1,50 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="KlijentMaster.master.cs" Inherits="AII.KlijentMaster" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <script src="Scripts/jquery-3.0.0.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Scripts/Naslovna.css" rel="stylesheet" />
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Francois+One&family=Roboto&display=swap" rel="stylesheet"/>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="body_s">
+
+  <nav class="navbar navbar_custom">
+  <span class="nav-item navbar_description">
+      <asp:Label Text="Klijent" runat="server" meta:resourcekey="LabelResource1" /></span>
+         
+      <asp:HyperLink NavigateUrl="~/KlijentPregled.aspx" runat="server" CssClass=" navbar_item" meta:resourcekey="HyperLinkResource1" >
+<i class='far fa-id-card'></i>  Pregled
+      </asp:HyperLink>
+           <asp:HyperLink NavigateUrl="~/KlijentAžuriranje.aspx" runat="server" CssClass="navbar_item" meta:resourcekey="HyperLinkResource2" >
+      <i class='far fa-id-card'></i> Ažuriranje
+      </asp:HyperLink>
+          <asp:HyperLink NavigateUrl="~/KlijentUnos.aspx" runat="server" CssClass="navbar_item" meta:resourcekey="HyperLinkResource3" >
+  <i class='far fa-id-card'></i>  Unos
+      </asp:HyperLink>
+              <asp:HyperLink NavigateUrl="~/KlijentDeaktivacija.aspx" runat="server" CssClass="navbar_item" meta:resourcekey="HyperLinkResource4" >
+  <i class='far fa-id-card'></i>  Deaktivacija
+      </asp:HyperLink>
+         <asp:HyperLink NavigateUrl="GlavniIzbornik.aspx" runat="server" CssClass="navbar_item menu" meta:resourcekey="HyperLinkResource5" >
+  <i class='fa fa-bars '></i>
+      </asp:HyperLink>
+   
+
+</nav>
+
+
+     <div>
+ <asp:ContentPlaceHolder ID="content" runat="server">
+
+      </asp:ContentPlaceHolder>
+      </div> 
+
+</body>
+</html>
